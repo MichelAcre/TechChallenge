@@ -25,6 +25,17 @@
             Novo Aluno
         </a>
 
+        <!-- Formulário de Busca -->
+
+        <form action="Index" method="get">
+            <div class="d-flex gap-2">
+                <input type="text" name="searchString" value="@ViewBag.CurrentFilter" class="form-control" placeholder="Search by name or email">
+                <button type="submit" class="btn btn-primary">Procurar</button>
+                <a asp-action="Index" class="btn btn-secondary">Limpar</a>
+
+            </div>
+        </form>
+
     </div>
 
 

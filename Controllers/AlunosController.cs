@@ -1,11 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Security;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
 using TechChallenge;
 
 namespace TechChallenge.Controllers
@@ -21,9 +23,16 @@ namespace TechChallenge.Controllers
         }
 
         // GET: Alunos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? searchString)
         {
-            return View(await _context.Alunos.ToListAsync());
+            var alunos = _context.Alunos.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                alunos = alunos.Where(a => a.Nome.Contains(searchString));
+            };
+
+            return View(await alunos.ToListAsync());
         }
 
         // GET: Alunos/Details/5
@@ -59,6 +68,8 @@ namespace TechChallenge.Controllers
         {
             if (ModelState.IsValid)
             {
+                aluno.DataCadastro = DateTime.Now;
+
                 _context.Add(aluno);
                 await _context.SaveChangesAsync();
                 TempData["Success"] = "Aluno(a) Cadastrado(a) com sucesso!";
@@ -82,7 +93,7 @@ namespace TechChallenge.Controllers
             }
             return View(aluno);
         }
-        
+
 
         // POST: Alunos/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -158,5 +169,6 @@ namespace TechChallenge.Controllers
         {
             return _context.Alunos.Any(e => e.Id == id);
         }
+
     }
 }

@@ -4,9 +4,9 @@ namespace TechChallenge;
 
 public class Categoria
 {
-    public int Id { get; set; }
+    [Required (ErrorMessage = "O campo ID é obrigatório")]public int Id { get; set; }
 
-    [Required(ErrorMessage = "O nome da categoria é obrigatório")]
+    [Required(ErrorMessage = "O nome da categoria é obrigatório.")]
     [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome deve ter entre 3 e 50 caracteres")]
     [Display(Name = "Nome da Categoria")]
     public string Nome { get; set; }
